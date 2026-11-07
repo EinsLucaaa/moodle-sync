@@ -105,7 +105,7 @@ Wenn die offizielle Moodle-App bei deiner Hochschule funktioniert, ist die Chanc
 
 - **Kein Server dazwischen.** Die App spricht ausschließlich mit deiner Moodle-Instanz. Keine Telemetrie, kein Tracking.
 - Dein **Passwort wird nicht gespeichert**, nur ein Zugriffstoken. Es liegt in `accounts.json` im App-Datenordner
-  (macOS: `~/Library/Application Support/de.primecodes.moodlesync/`, Rechte `600`). Konto entfernen löscht es.
+  (macOS: `~/Library/Application Support/dev.lucaaa.moodlesync/`, Rechte `600`). Konto entfernen löscht es.
 - Der Token wird **nur an den eigenen Moodle-Host** geschickt, auch bei Weiterleitungen nicht an fremde Server.
 - Zielpfade vom Server werden bereinigt (kein `..`, keine Sonderzeichen), Dateien landen immer im gewählten Ordner.
 - Index und Download-Verlauf liegen lokal im selben Datenordner.
