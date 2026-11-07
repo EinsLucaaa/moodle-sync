@@ -151,3 +151,7 @@ Tests: `cargo test --manifest-path src-tauri/Cargo.toml` (Pfad-Bereinigung, URL-
 Moodle Sync ist für den **eigenen Zugriff auf deine eigenen Kurse** gedacht, so wie du sie auch im Browser öffnen
 könntest. Beachte die Nutzungsbedingungen deiner Hochschule und das Urheberrecht an den Unterlagen: Nicht
 weitergeben, was nicht für die Weitergabe gedacht ist. Das Projekt steht in keiner Verbindung zu Moodle Pty Ltd.
+
+## Lizenz
+
+[MIT](LICENSE)
