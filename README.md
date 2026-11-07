@@ -66,8 +66,16 @@ Typische Einsatzfälle:
 ### Fertige App
 Unter [Releases](../../releases) gibt es Bundles für macOS, Windows und Linux.
 
-> Die Builds sind **nicht signiert**. Auf macOS: Rechtsklick auf die App, **Öffnen**. Oder einmalig
-> `xattr -dr com.apple.quarantine "/Applications/Moodle Sync.app"`.
+> Die Builds sind **nicht mit einem Apple-Developer-Zertifikat signiert**. Deshalb meldet macOS bei Downloads
+> aus dem Browser unter Umständen „Moodle Sync ist beschädigt“. Die App ist in Ordnung, es ist nur die
+> Quarantäne-Markierung. Einmalig im Terminal entfernen (App vorher nach **Programme** ziehen):
+>
+> ```bash
+> xattr -dr com.apple.quarantine "/Applications/Moodle Sync.app"
+> ```
+>
+> Bei der Meldung „nicht verifizierter Entwickler“ hilft stattdessen **Systemeinstellungen → Datenschutz &
+> Sicherheit → Dennoch öffnen**.
 
 ### Selbst bauen
 Voraussetzungen: [Node](https://nodejs.org) 22+, [pnpm](https://pnpm.io), [Rust](https://rustup.rs) und die

@@ -1,4 +1,4 @@
-import { AlertCircle, ChevronRight, Eye, EyeOff, FileStack, MoreHorizontal, Star } from "lucide-react"
+import { AlertCircle, AlertTriangle, ChevronRight, Eye, EyeOff, FileStack, MoreHorizontal, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -104,6 +104,11 @@ function CourseCard({
                 <FileStack className="size-3.5" /> {info.files}
               </span>
               <span>· {formatBytes(info.size)}</span>
+              {course.warning && (
+                <span title={course.warning} className="text-amber-500">
+                  <AlertTriangle className="size-3.5" />
+                </span>
+              )}
               {info.newCount > 0 && (
                 <span className="rounded-full bg-primary/10 px-1.5 py-px text-[10px] font-medium text-primary">
                   {info.newCount} neu

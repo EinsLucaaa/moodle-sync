@@ -39,6 +39,7 @@ export interface Course {
   lastAccess?: number | null
   hidden: boolean
   error?: string | null
+  warning?: string | null
   sections: Section[]
 }
 

@@ -181,18 +181,11 @@ async fn sync_index(
                 (client.clone(), account.clone(), app.clone(), done.clone());
             async move {
                 let mut course = moodle::course_from_json(&c);
-                match moodle::call(
-                    &client,
-                    &account.site_url,
-                    &account.token,
-                    "core_course_get_contents",
-                    &[("courseid", course.id.to_string())],
-                )
-                .await
-                {
-                    Ok(v) => course.sections = moodle::parse_sections(course.id, &v),
-                    Err(e) => course.error = Some(e),
-                }
+                let (sections, error, warning) =
+                    moodle::course_sections(&client, &account.site_url, &account.token, course.id).await;
+                course.sections = sections;
+                course.error = error;
+                course.warning = warning;
                 let n = done.fetch_add(1, Ordering::SeqCst) + 1;
                 let _ = app.emit(
                     "sync-progress",

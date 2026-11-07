@@ -64,6 +64,9 @@ pub struct Course {
     pub last_access: Option<i64>,
     pub hidden: bool,
     pub error: Option<String>,
+    /// Kurs wurde nur teilweise geladen (z. B. ein defektes Modul in Moodle).
+    #[serde(default)]
+    pub warning: Option<String>,
     pub sections: Vec<Section>,
 }
 
@@ -260,7 +263,68 @@ pub fn course_from_json(c: &Value) -> Course {
         last_access: c.get("lastaccess").and_then(Value::as_i64).filter(|t| *t > 0),
         hidden: c.get("hidden").and_then(Value::as_bool).unwrap_or(false),
         error: None,
+        warning: None,
         sections: vec![],
+    }
+}
+
+fn partial_warning(first_error: &str, failed: usize, total: usize) -> String {
+    format!("{failed} von {total} Abschnitten konnten nicht geladen werden ({first_error})")
+}
+
+/// Lädt die Kursinhalte. Schlägt der Gesamtaufruf fehl (typisch: ein defektes Modul,
+/// `invalidcoursemodule`), werden die Abschnitte einzeln geholt, damit nur der kaputte
+/// Teil fehlt und nicht der ganze Kurs.
+pub async fn course_sections(
+    client: &Client,
+    site: &str,
+    token: &str,
+    course_id: i64,
+) -> (Vec<Section>, Option<String>, Option<String>) {
+    let id = course_id.to_string();
+    let first = match call(client, site, token, "core_course_get_contents", &[("courseid", id.clone())]).await {
+        Ok(v) => return (parse_sections(course_id, &v), None, None),
+        Err(e) => e,
+    };
+
+    // Abschnittsliste ohne Module (Modul-Daten können die Fehlerquelle sein).
+    let overview_params = [
+        ("courseid", id.clone()),
+        ("options[0][name]", "excludemodules".to_string()),
+        ("options[0][value]", "1".to_string()),
+    ];
+    let Ok(overview) = call(client, site, token, "core_course_get_contents", &overview_params).await else {
+        return (vec![], Some(first), None);
+    };
+
+    let numbers: Vec<i64> = overview
+        .as_array()
+        .into_iter()
+        .flatten()
+        .enumerate()
+        .map(|(i, s)| s["section"].as_i64().unwrap_or(i as i64))
+        .collect();
+
+    let mut sections = Vec::new();
+    let mut failed = 0;
+    for number in &numbers {
+        let params = [
+            ("courseid", id.clone()),
+            ("options[0][name]", "sectionnumber".to_string()),
+            ("options[0][value]", number.to_string()),
+        ];
+        match call(client, site, token, "core_course_get_contents", &params).await {
+            Ok(v) => sections.extend(parse_sections(course_id, &v)),
+            Err(_) => failed += 1,
+        }
+    }
+
+    if failed == 0 {
+        (sections, None, None)
+    } else if failed == numbers.len() {
+        (vec![], Some(first), None)
+    } else {
+        (sections, None, Some(partial_warning(&first, failed, numbers.len())))
     }
 }
 
@@ -469,6 +533,14 @@ mod tests {
         assert!(m[2].files[0].is_link);
         assert_eq!(m[2].files.len(), 1);
         assert_eq!(m[2].files[0].name, "Doku.url");
+    }
+
+    #[test]
+    fn partial_warning_is_readable() {
+        assert_eq!(
+            partial_warning("Ungültige Kursmodul-ID", 2, 9),
+            "2 von 9 Abschnitten konnten nicht geladen werden (Ungültige Kursmodul-ID)"
+        );
     }
 
     #[test]
