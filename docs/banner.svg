@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="Moodle Sync">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="0.55" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.1" r="0.8">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#ffffff" fill-opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="320" rx="20" fill="url(#bg)"/>
+  <rect width="1280" height="320" rx="20" fill="url(#dots)"/>
+  <rect width="1280" height="320" rx="20" fill="url(#glow)"/>
+
+  <!-- Icon -->
+  <g transform="translate(96 80)">
+    <rect width="160" height="160" rx="36" fill="#ffffff" fill-opacity="0.16"/>
+    <rect x="1" y="1" width="158" height="158" rx="35" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+    <rect x="70" y="30" width="20" height="62" fill="#ffffff"/>
+    <polygon points="42,84 118,84 80,124" fill="#ffffff"/>
+    <rect x="46" y="130" width="68" height="10" rx="5" fill="#ffffff"/>
+  </g>
+
+  <!-- Text -->
+  <g font-family="-apple-system, 'SF Pro Display', 'Segoe UI', Inter, Helvetica, Arial, sans-serif" fill="#ffffff">
+    <text x="296" y="152" font-size="76" font-weight="700" letter-spacing="-2">Moodle Sync</text>
+    <text x="298" y="200" font-size="28" font-weight="400" fill-opacity="0.9">Alle Kurse indexieren. Dateien finden. Mit einem Klick laden.</text>
+    <g font-size="18" font-weight="600">
+      <rect x="298" y="226" width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.18"/>
+      <text x="344" y="249" text-anchor="middle">Tauri 2</text>
+      <rect x="402" y="226" width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.18"/>
+      <text x="448" y="249" text-anchor="middle">React</text>
+      <rect x="506" y="226" width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.18"/>
+      <text x="552" y="249" text-anchor="middle">Rust</text>
+      <rect x="610" y="226" width="116" height="34" rx="17" fill="#ffffff" fill-opacity="0.18"/>
+      <text x="668" y="249" text-anchor="middle">shadcn/ui</text>
+    </g>
+  </g>
+</svg>
